@@ -74,6 +74,22 @@ variable "s3_bucket_base" {
 
 
 
+variable "igw_name" {
+    description = "internet gateway name"
+    type = string
+}
+
+
+
+
+variable "rt_name" {
+    description = "route table name"
+    type = string
+}
+
+
+
+
 
 
 

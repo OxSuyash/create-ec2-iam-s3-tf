@@ -28,6 +28,39 @@ resource "aws_subnet" "private" {
     }
 }
 
+
+#door between vpc and internet
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = var.igw_name
+  }
+}
+
+
+#route table is map for traffic
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
+
+  tags = {
+    Name = var.rt_name
+  }
+}
+
+#attaches route table to subnet
+resource "aws_route_table_association" "public_assoc" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+
+
 #security group
 resource "aws_security_group" "ssh_access" {
     name = var.sg_name_from_name
@@ -91,6 +124,7 @@ resource "aws_instance" "create_instance" {
     ami = var.ec2_ami_id
     instance_type = var.instance_type
     subnet_id = aws_subnet.public.id
+    associate_public_ip_address = true
     vpc_security_group_ids  = [aws_security_group.ssh_access.id]
     iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
     key_name = var.aws_key_name
