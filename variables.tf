@@ -87,6 +87,14 @@ variable "rt_name" {
     type = string
 }
 
+variable "availability_zone" {
+    description = "availability zone name"
+    type = string
+}
+
+
+
+
 
 
 
