@@ -33,6 +33,8 @@ prereq : terraform installed -> https://github.com/OxSuyash/terraform-notes/blob
 
   s3_bucket_base = "s3-bucket-name"
 
+  availability_zone = "check az for your instance type under your aws region"
+
   ```
 3. init
 
